@@ -27,7 +27,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		652408C81BE743D4006FA4C6 /* iOS App Signer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "iOS App Signer.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		652408C81BE743D4006FA4C6 /* Kitcast Builder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Kitcast Builder.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		652408CB1BE743D4006FA4C6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		652408CD1BE743D4006FA4C6 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		652408CF1BE743D4006FA4C6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -78,7 +78,7 @@
 		652408C91BE743D4006FA4C6 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				652408C81BE743D4006FA4C6 /* iOS App Signer.app */,
+				652408C81BE743D4006FA4C6 /* Kitcast Builder.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -167,9 +167,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		652408C71BE743D4006FA4C6 /* iOS App Signer */ = {
+		652408C71BE743D4006FA4C6 /* Kitcast Builder */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 652408ED1BE743D4006FA4C6 /* Build configuration list for PBXNativeTarget "iOS App Signer" */;
+			buildConfigurationList = 652408ED1BE743D4006FA4C6 /* Build configuration list for PBXNativeTarget "Kitcast Builder" */;
 			buildPhases = (
 				652408C41BE743D4006FA4C6 /* Sources */,
 				652408C51BE743D4006FA4C6 /* Frameworks */,
@@ -179,9 +179,9 @@
 			);
 			dependencies = (
 			);
-			name = "iOS App Signer";
+			name = "Kitcast Builder";
 			productName = AppSigner;
-			productReference = 652408C81BE743D4006FA4C6 /* iOS App Signer.app */;
+			productReference = 652408C81BE743D4006FA4C6 /* Kitcast Builder.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -196,7 +196,7 @@
 				TargetAttributes = {
 					652408C71BE743D4006FA4C6 = {
 						CreatedOnToolsVersion = 7.1;
-						DevelopmentTeam = 7PM929Z8M2;
+						DevelopmentTeam = 8JRC98G5P8;
 						LastSwiftMigration = 1020;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
@@ -207,7 +207,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 652408C31BE743D4006FA4C6 /* Build configuration list for PBXProject "iOS App Signer" */;
+			buildConfigurationList = 652408C31BE743D4006FA4C6 /* Build configuration list for PBXProject "Kitcast Builder" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -221,7 +221,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				652408C71BE743D4006FA4C6 /* iOS App Signer */,
+				652408C71BE743D4006FA4C6 /* Kitcast Builder */,
 			);
 		};
 /* End PBXProject section */
@@ -357,13 +357,13 @@
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 8JRC98G5P8;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = AppSigner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
-				PRODUCT_BUNDLE_IDENTIFIER = com.DanTheMan827.AppSigner;
-				PRODUCT_NAME = "iOS App Signer";
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				PRODUCT_BUNDLE_IDENTIFIER = "tv.kitcast.Kitcast-Builder";
+				PRODUCT_NAME = "Kitcast Builder";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "iOS App Signer-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -383,9 +383,9 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = AppSigner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
-				PRODUCT_BUNDLE_IDENTIFIER = com.DanTheMan827.AppSigner;
-				PRODUCT_NAME = "iOS App Signer";
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				PRODUCT_BUNDLE_IDENTIFIER = "tv.kitcast.Kitcast-Builder";
+				PRODUCT_NAME = "Kitcast Builder";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "iOS App Signer-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
@@ -395,7 +395,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		652408C31BE743D4006FA4C6 /* Build configuration list for PBXProject "iOS App Signer" */ = {
+		652408C31BE743D4006FA4C6 /* Build configuration list for PBXProject "Kitcast Builder" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				652408EB1BE743D4006FA4C6 /* Debug */,
@@ -404,7 +404,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		652408ED1BE743D4006FA4C6 /* Build configuration list for PBXNativeTarget "iOS App Signer" */ = {
+		652408ED1BE743D4006FA4C6 /* Build configuration list for PBXNativeTarget "Kitcast Builder" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				652408EE1BE743D4006FA4C6 /* Debug */,
