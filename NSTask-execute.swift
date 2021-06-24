@@ -32,6 +32,8 @@ extension Process {
         pipeFile.closeFile();
         self.terminate();
         
+        print(data, "!!!", String.init(data: data as Data, encoding: String.Encoding.utf8))
+        
         if let output = String.init(data: data as Data, encoding: String.Encoding.utf8) {
             return AppSignerTaskOutput(status: self.terminationStatus, output: output)
         } else {
@@ -41,6 +43,9 @@ extension Process {
     }
     
     func execute(_ launchPath: String, workingDirectory: String?, arguments: [String]?)->AppSignerTaskOutput{
+        
+        print("🍰", launchPath, workingDirectory, arguments)
+        
         self.launchPath = launchPath
         if arguments != nil {
             self.arguments = arguments

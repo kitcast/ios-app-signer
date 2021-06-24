@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4C95B5342682B2B80026B060 /* PathExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C95B5332682B2B80026B060 /* PathExt.swift */; };
+		4C95B5362682B2BF0026B060 /* FilePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C95B5352682B2BF0026B060 /* FilePicker.swift */; };
+		4C95B5382682B3350026B060 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4C95B5372682B3350026B060 /* Main.storyboard */; };
+		4C95B53A2682B36B0026B060 /* KitcastBuildEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C95B5392682B36B0026B060 /* KitcastBuildEndpoint.swift */; };
 		652408CC1BE743D4006FA4C6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652408CB1BE743D4006FA4C6 /* AppDelegate.swift */; };
 		652408CE1BE743D4006FA4C6 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652408CD1BE743D4006FA4C6 /* MainView.swift */; };
 		652408D01BE743D4006FA4C6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 652408CF1BE743D4006FA4C6 /* Assets.xcassets */; };
@@ -27,6 +31,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4C95B5332682B2B80026B060 /* PathExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PathExt.swift; sourceTree = "<group>"; };
+		4C95B5352682B2BF0026B060 /* FilePicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilePicker.swift; sourceTree = "<group>"; };
+		4C95B5372682B3350026B060 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		4C95B5392682B36B0026B060 /* KitcastBuildEndpoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KitcastBuildEndpoint.swift; sourceTree = "<group>"; };
 		652408C81BE743D4006FA4C6 /* Kitcast Builder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Kitcast Builder.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		652408CB1BE743D4006FA4C6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		652408CD1BE743D4006FA4C6 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
@@ -90,6 +98,7 @@
 				655FFFDF1BEB270200D43AD8 /* Extensions */,
 				655FFFA01BEAD90800D43AD8 /* Classes */,
 				65311EB51BF88EB800516EFD /* Application.xib */,
+				4C95B5372682B3350026B060 /* Main.storyboard */,
 				659734931C65A14300383D2D /* Updates.xib */,
 				659734951C65A1E800383D2D /* UpdatesController.swift */,
 				65B24E0D1BECB30D005D2068 /* AppSigner.entitlements */,
@@ -104,6 +113,8 @@
 		655FFFA01BEAD90800D43AD8 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				4C95B5392682B36B0026B060 /* KitcastBuildEndpoint.swift */,
+				4C95B5352682B2BF0026B060 /* FilePicker.swift */,
 				655FFFA11BEAD93600D43AD8 /* ProvisioningProfile.swift */,
 				65311EAF1BF835F100516EFD /* Log.swift */,
 				65311EAD1BF8259000516EFD /* NSMenuLink.swift */,
@@ -116,6 +127,7 @@
 		655FFFDF1BEB270200D43AD8 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				4C95B5332682B2B80026B060 /* PathExt.swift */,
 				655FFF9C1BE9B3E300D43AD8 /* NSTask-execute.swift */,
 				655FFF9E1BE9BA9D00D43AD8 /* StringByAppendingPathComponent.swift */,
 			);
@@ -232,6 +244,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				65CED3A32D8B6F3E00E9185B /* fix-wwdr.sh in Resources */,
+				4C95B5382682B3350026B060 /* Main.storyboard in Resources */,
 				65311EB61BF88EB800516EFD /* Application.xib in Resources */,
 				652408D01BE743D4006FA4C6 /* Assets.xcassets in Resources */,
 				659734941C65A14300383D2D /* Updates.xib in Resources */,
@@ -247,15 +260,18 @@
 			files = (
 				659734A01C65B5F600383D2D /* MarkdownTokenizer.m in Sources */,
 				652408CE1BE743D4006FA4C6 /* MainView.swift in Sources */,
+				4C95B5342682B2B80026B060 /* PathExt.swift in Sources */,
 				659734A71C65B94F00383D2D /* fmemopen.c in Sources */,
 				65311EB01BF835F100516EFD /* Log.swift in Sources */,
 				655FFF9F1BE9BA9D00D43AD8 /* StringByAppendingPathComponent.swift in Sources */,
 				659734A11C65B5F600383D2D /* MarkdownTokens.m in Sources */,
 				652408CC1BE743D4006FA4C6 /* AppDelegate.swift in Sources */,
 				659734961C65A1E800383D2D /* UpdatesController.swift in Sources */,
+				4C95B53A2682B36B0026B060 /* KitcastBuildEndpoint.swift in Sources */,
 				65311EAE1BF8259000516EFD /* NSMenuLink.swift in Sources */,
 				655FFF9D1BE9B3E300D43AD8 /* NSTask-execute.swift in Sources */,
 				659734A21C65B5F600383D2D /* NSAttributedStringMarkdownParser.m in Sources */,
+				4C95B5362682B2BF0026B060 /* FilePicker.swift in Sources */,
 				655FFFA21BEAD93600D43AD8 /* ProvisioningProfile.swift in Sources */,
 				65B2EAA21CDE981500D02053 /* iASShared.swift in Sources */,
 			);
@@ -357,11 +373,13 @@
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = 8JRC98G5P8;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = AppSigner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MARKETING_VERSION = 0.2;
 				PRODUCT_BUNDLE_IDENTIFIER = "tv.kitcast.Kitcast-Builder";
 				PRODUCT_NAME = "Kitcast Builder";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -379,11 +397,13 @@
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = AppSigner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MARKETING_VERSION = 0.2;
 				PRODUCT_BUNDLE_IDENTIFIER = "tv.kitcast.Kitcast-Builder";
 				PRODUCT_NAME = "Kitcast Builder";
 				PROVISIONING_PROFILE_SPECIFIER = "";

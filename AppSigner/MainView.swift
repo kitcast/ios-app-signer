@@ -11,10 +11,25 @@ import Foundation
 
 class MainView: NSView, URLSessionDataDelegate, URLSessionDelegate, URLSessionDownloadDelegate {
     
+    private let endpoint = KitcastBuildEndpoint()
+    
+    private var build: KitcastBuild?
+    
+    @IBOutlet weak var dockerLabel: NSTextField!
+    @IBOutlet weak var versionLabel: NSTextField!
+    @IBOutlet weak var statusLabel: NSTextField!
+    @IBOutlet weak var indicator: NSProgressIndicator!
+    
+    @IBOutlet weak var beginButton: NSButton!
+    
+    @IBOutlet var certificatePicker: FilePicker!
+    @IBOutlet var provisioningProfilePicker: FilePicker!
+    @IBOutlet var outputDirectoryPicker: FilePicker!
+    
     //MARK: IBOutlets
     @IBOutlet var ProvisioningProfilesPopup: NSPopUpButton!
     @IBOutlet var CodesigningCertsPopup: NSPopUpButton!
-    @IBOutlet var StatusLabel: NSTextField!
+    //@IBOutlet var StatusLabel: NSTextField!
     @IBOutlet var InputFileText: NSTextField!
     @IBOutlet var BrowseButton: NSButton!
     @IBOutlet var StartButton: NSButton!
@@ -26,6 +41,7 @@ class MainView: NSView, URLSessionDataDelegate, URLSessionDelegate, URLSessionDo
     @IBOutlet var ignorePluginsCheckbox: NSButton!
     @IBOutlet var noGetTaskAllowCheckbox: NSButton!
 
+    var newApplicationID: String?
     
     //MARK: Variables
     var provisioningProfiles:[ProvisioningProfile] = []
@@ -169,7 +185,19 @@ class MainView: NSView, URLSessionDataDelegate, URLSessionDelegate, URLSessionDo
                 
                 NSApplication.shared.terminate(self)
             }
-            UpdatesController.checkForUpdate()
+            //UpdatesController.checkForUpdate()
+        }
+                
+        let isXcodeEnabled = checkXcodeCLI()
+        dockerLabel.stringValue = isXcodeEnabled.description
+        versionLabel.stringValue = "loading..."
+        endpoint.fetch { build in
+            DispatchQueue.main.async {
+                self.build = build
+                self.versionLabel.stringValue = build.latestVersion
+                self.beginButton.isEnabled = true
+                self.setStatus("Ready")
+            }
         }
     }
     
@@ -207,7 +235,8 @@ class MainView: NSView, URLSessionDataDelegate, URLSessionDelegate, URLSessionDo
             }
         }
         else{
-            StatusLabel.stringValue = status
+            statusLabel.stringValue = status
+            //StatusLabel.stringValue = status
             Log.write(status)
         }
     }
@@ -219,11 +248,11 @@ class MainView: NSView, URLSessionDataDelegate, URLSessionDelegate, URLSessionDo
         }
         setStatus("Found \(provisioningProfiles.count) Provisioning Profile\(provisioningProfiles.count>1 || provisioningProfiles.count<1 ? "s":"")")
         ProvisioningProfilesPopup.removeAllItems()
-        ProvisioningProfilesPopup.addItems(withTitles: [
-            "Re-Sign Only",
-            "Choose Custom File",
-            "––––––––––––––––––––––"
-        ])
+//        ProvisioningProfilesPopup.addItems(withTitles: [
+//            "Select Profile",
+//            "Choose Custom File",
+//        ])
+//        ProvisioningProfilesPopup.menu?.addItem(.separator())
         let formatter = DateFormatter()
         formatter.dateStyle = .short
         formatter.timeStyle = .medium
@@ -313,14 +342,10 @@ class MainView: NSView, URLSessionDataDelegate, URLSessionDelegate, URLSessionDo
             }
             if profile.appID.firstIndex(of: "*") == nil {
                 // Not a wildcard profile
-                NewApplicationIDTextField.stringValue = profile.appID
-                NewApplicationIDTextField.isEnabled = false
+                newApplicationID = profile.appID
             } else {
                 // Wildcard profile
-                if NewApplicationIDTextField.isEnabled == false {
-                    NewApplicationIDTextField.stringValue = ""
-                    NewApplicationIDTextField.isEnabled = true
-                }
+                newApplicationID = ""
             }
         } else {
             ProvisioningProfilesPopup.selectItem(at: 0)
@@ -338,26 +363,17 @@ class MainView: NSView, URLSessionDataDelegate, URLSessionDelegate, URLSessionDo
         }
         else{
             if(enabled){
-                InputFileText.isEnabled = true
-                BrowseButton.isEnabled = true
                 ProvisioningProfilesPopup.isEnabled = true
                 CodesigningCertsPopup.isEnabled = true
-                NewApplicationIDTextField.isEnabled = ReEnableNewApplicationID
-                NewApplicationIDTextField.stringValue = PreviousNewApplicationID
-                StartButton.isEnabled = true
-                appDisplayName.isEnabled = true
+                outputDirectoryPicker.field.isEnabled = true
+                outputDirectoryPicker.button.isEnabled = true
+                beginButton.isEnabled = true
             } else {
-                // Backup previous values
-                PreviousNewApplicationID = NewApplicationIDTextField.stringValue
-                ReEnableNewApplicationID = NewApplicationIDTextField.isEnabled
-                
-                InputFileText.isEnabled = false
-                BrowseButton.isEnabled = false
                 ProvisioningProfilesPopup.isEnabled = false
                 CodesigningCertsPopup.isEnabled = false
-                NewApplicationIDTextField.isEnabled = false
-                StartButton.isEnabled = false
-                appDisplayName.isEnabled = false
+                outputDirectoryPicker.field.isEnabled = false
+                outputDirectoryPicker.button.isEnabled = false
+                beginButton.isEnabled = false
             }
         }
     }
@@ -461,10 +477,10 @@ class MainView: NSView, URLSessionDataDelegate, URLSessionDelegate, URLSessionDo
             }
         }
         downloading = false
-        downloadProgress.doubleValue = 0.0
-        downloadProgress.stopAnimation(nil)
         DispatchQueue.main.async {
-            self.downloadProgress.isHidden = true
+            self.indicator.doubleValue = 0.0
+            self.indicator.stopAnimation(nil)
+            self.indicator.isHidden = true
         }
     }
     
@@ -472,7 +488,8 @@ class MainView: NSView, URLSessionDataDelegate, URLSessionDelegate, URLSessionDo
         
         //StatusLabel.stringValue = "Downloading file: \(bytesToSmallestSi(Double(totalBytesWritten))) / \(bytesToSmallestSi(Double(totalBytesExpectedToWrite)))"
         let percentDownloaded = (Double(totalBytesWritten) / Double(totalBytesExpectedToWrite)) * 100
-        downloadProgress.doubleValue = percentDownloaded
+        indicator.doubleValue = percentDownloaded
+        indicator.isIndeterminate = false
     }
     
     //MARK: Codesigning
@@ -542,24 +559,8 @@ class MainView: NSView, URLSessionDataDelegate, URLSessionDelegate, URLSessionDo
     }
     
     @objc func startSigning() {
-        let inputFile = InputFileText.stringValue
-        if inputFile.pathExtension.lowercased() == "appex" {
-            outputFile = inputFile
-        } else {
-            //MARK: Get output filename
-            let saveDialog = NSSavePanel()
-            saveDialog.allowedFileTypes = ["ipa"]
-            saveDialog.nameFieldStringValue = inputFile.lastPathComponent.stringByDeletingPathExtension
-            if saveDialog.runModal().rawValue == NSFileHandlingPanelOKButton {
-                outputFile = saveDialog.url!.path
-            } else {
-                outputFile = nil
-            }
-        }
-        if outputFile != nil {
-            controlsEnabled(false)
-            Thread.detachNewThreadSelector(#selector(self.signingThread), toTarget: self, with: nil)
-        }
+        controlsEnabled(false)
+        Thread.detachNewThreadSelector(#selector(self.signingThread), toTarget: self, with: nil)
     }
     
     @objc func signingThread(){
@@ -575,15 +576,12 @@ class MainView: NSView, URLSessionDataDelegate, URLSessionDelegate, URLSessionDo
         var newVersion : String = ""
 
         DispatchQueue.main.sync {
-            downloadProgress.isHidden = true
-            inputFile = self.InputFileText.stringValue
+            indicator.isHidden = true
+            inputFile = self.build?.ipa.absoluteString ?? ""
             signingCertificate = self.CodesigningCertsPopup.selectedItem?.title
-            newApplicationID = self.NewApplicationIDTextField.stringValue.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-            newDisplayName = self.appDisplayName.stringValue.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-            newShortVersion = self.appShortVersion.stringValue.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-            newVersion = self.appVersion.stringValue.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-            shouldCheckPlugins = ignorePluginsCheckbox.state == .off
-            shouldSkipGetTaskAllow = noGetTaskAllowCheckbox.state == .on
+            newApplicationID = self.newApplicationID ?? ""
+            shouldCheckPlugins = true
+            shouldSkipGetTaskAllow = true
         }
 
         var provisioningFile = self.profileFilename
@@ -696,9 +694,9 @@ class MainView: NSView, URLSessionDataDelegate, URLSessionDelegate, URLSessionDo
                 let downloadTask = defaultSession.downloadTask(with: url)
                 setStatus("Downloading file")
                 DispatchQueue.main.async {
-                    self.downloadProgress.isHidden = false
+                    self.indicator.isHidden = false
+                    self.indicator.startAnimation(nil)
                 }
-                downloadProgress.startAnimation(nil)
                 downloadTask.resume()
                 defaultSession.finishTasksAndInvalidate()
             }
@@ -1027,7 +1025,7 @@ class MainView: NSView, URLSessionDataDelegate, URLSessionDelegate, URLSessionDo
                     recursiveDirectorySearch(currentEggPath, extensions: ["egg"], found: signEgg)
                     recursiveDirectorySearch(currentEggPath, extensions: signableExtensions, found: eggSigningFunction)
                     setStatus("Compressing \(shortName)")
-                    _ = self.zip(currentEggPath, outputFile: eggFile)                    
+                    _ = self.zip(currentEggPath, outputFile: eggFile)
                 }
                 
                 recursiveDirectorySearch(appBundlePath, extensions: ["egg"], found: signEgg)
@@ -1059,6 +1057,11 @@ class MainView: NSView, URLSessionDataDelegate, URLSessionDelegate, URLSessionDo
             Log.write(error.localizedDescription)
             cleanup(tempFolder); return
         }
+
+        let outputFile = outputDirectoryPicker.url?
+            .appendingPathComponent("kitcast")
+            .appendingPathExtension("ipa")
+            .relativePath
         
         //MARK: Packaging
         //Check if output already exists and delete if so
@@ -1072,6 +1075,8 @@ class MainView: NSView, URLSessionDataDelegate, URLSessionDelegate, URLSessionDo
                 return
             }
         }
+        
+        print("~~~", outputFile, workingDirectory)
 
         switch outputFile?.pathExtension.lowercased() {
         case "ipa":
@@ -1098,39 +1103,8 @@ class MainView: NSView, URLSessionDataDelegate, URLSessionDelegate, URLSessionDo
 
     //MARK: IBActions
     @IBAction func chooseProvisioningProfile(_ sender: NSPopUpButton) {
-        
-        switch(sender.indexOfSelectedItem){
-        case 0:
-            self.profileFilename = nil
-            if NewApplicationIDTextField.isEnabled == false {
-                NewApplicationIDTextField.isEnabled = true
-                NewApplicationIDTextField.stringValue = ""
-            }
-            
-        case 1:
-            let openDialog = NSOpenPanel()
-            openDialog.canChooseFiles = true
-            openDialog.canChooseDirectories = false
-            openDialog.allowsMultipleSelection = false
-            openDialog.allowsOtherFileTypes = false
-            openDialog.allowedFileTypes = ["mobileprovision"]
-            openDialog.runModal()
-            if let filename = openDialog.urls.first {
-                checkProfileID(ProvisioningProfile(filename: filename.path))
-            } else {
-                sender.selectItem(at: 0)
-                chooseProvisioningProfile(sender)
-            }
-            
-        case 2:
-            sender.selectItem(at: 0)
-            chooseProvisioningProfile(sender)
-            
-        default:
-            let profile = provisioningProfiles[sender.indexOfSelectedItem - 3]
-            checkProfileID(profile)
-        }
-        
+        let profile = provisioningProfiles[sender.indexOfSelectedItem]
+        checkProfileID(profile)
     }
     @IBAction func doBrowse(_ sender: AnyObject) {
         let openDialog = NSOpenPanel()
@@ -1150,12 +1124,8 @@ class MainView: NSView, URLSessionDataDelegate, URLSessionDelegate, URLSessionDo
     }
     
     @IBAction func doSign(_ sender: NSButton) {
-        if codesigningCerts.count > 0 {
-            NSApplication.shared.windows[0].makeFirstResponder(self)
-            startSigning()
-        } else {
-            showCodesignCertsErrorAlert()
-        }
+        NSApplication.shared.windows[0].makeFirstResponder(self)
+        startSigning()
     }
     
     @IBAction func statusLabelClick(_ sender: NSButton) {

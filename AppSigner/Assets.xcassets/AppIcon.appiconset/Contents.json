@@ -1,68 +1,68 @@
 {
   "images" : [
     {
-      "size" : "16x16",
+      "filename" : "Rectangle Icon@0.02x.png",
       "idiom" : "mac",
-      "filename" : "16x16.png",
-      "scale" : "1x"
+      "scale" : "1x",
+      "size" : "16x16"
     },
     {
-      "size" : "16x16",
+      "filename" : "Rectangle Icon@0.03x-1.png",
       "idiom" : "mac",
-      "filename" : "32x32-1.png",
-      "scale" : "2x"
+      "scale" : "2x",
+      "size" : "16x16"
     },
     {
-      "size" : "32x32",
+      "filename" : "Rectangle Icon@0.03x.png",
       "idiom" : "mac",
-      "filename" : "32x32.png",
-      "scale" : "1x"
+      "scale" : "1x",
+      "size" : "32x32"
     },
     {
-      "size" : "32x32",
+      "filename" : "Rectangle Icon@0.06x.png",
       "idiom" : "mac",
-      "filename" : "64x64.png",
-      "scale" : "2x"
+      "scale" : "2x",
+      "size" : "32x32"
     },
     {
-      "size" : "128x128",
+      "filename" : "Rectangle Icon@0.12x.png",
       "idiom" : "mac",
-      "filename" : "128x128.png",
-      "scale" : "1x"
+      "scale" : "1x",
+      "size" : "128x128"
     },
     {
-      "size" : "128x128",
+      "filename" : "Rectangle Icon@0.25x-1.png",
       "idiom" : "mac",
-      "filename" : "256x256-1.png",
-      "scale" : "2x"
+      "scale" : "2x",
+      "size" : "128x128"
     },
     {
-      "size" : "256x256",
+      "filename" : "Rectangle Icon@0.25x.png",
       "idiom" : "mac",
-      "filename" : "256x256.png",
-      "scale" : "1x"
+      "scale" : "1x",
+      "size" : "256x256"
     },
     {
-      "size" : "256x256",
+      "filename" : "Rectangle Icon@0.5x-1.png",
       "idiom" : "mac",
-      "filename" : "512x512.png",
-      "scale" : "2x"
+      "scale" : "2x",
+      "size" : "256x256"
     },
     {
-      "size" : "512x512",
+      "filename" : "Rectangle Icon@0.5x.png",
       "idiom" : "mac",
-      "filename" : "document-sign-2.png",
-      "scale" : "1x"
+      "scale" : "1x",
+      "size" : "512x512"
     },
     {
-      "size" : "512x512",
+      "filename" : "Rectangle Icon.png",
       "idiom" : "mac",
-      "filename" : "document-sign.png",
-      "scale" : "2x"
+      "scale" : "2x",
+      "size" : "512x512"
     }
   ],
   "info" : {
-    "version" : 1,
-    "author" : "xcode"
+    "author" : "xcode",
+    "version" : 1
   }
 }
