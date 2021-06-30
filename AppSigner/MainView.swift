@@ -303,16 +303,8 @@ class MainView: NSView, URLSessionDataDelegate, URLSessionDelegate, URLSessionDo
     @objc func showCodesignCertsErrorAlert(){
         let alert = NSAlert()
         alert.messageText = "No codesigning certificates found"
-        alert.informativeText = "I can attempt to fix this automatically, would you like me to try?"
-        alert.addButton(withTitle: "Yes")
-        alert.addButton(withTitle: "No")
-        if alert.runModal() == NSApplication.ModalResponse.alertFirstButtonReturn {
-            if let tempFolder = makeTempFolder() {
-                iASShared.fixSigning(tempFolder)
-                try? fileManager.removeItem(atPath: tempFolder)
-                populateCodesigningCerts()
-            }
-        }
+        alert.addButton(withTitle: "OK")
+        alert.runModal()
     }
     
     @objc func populateCodesigningCerts() {
@@ -635,25 +627,11 @@ class MainView: NSView, URLSessionDataDelegate, URLSessionDelegate, URLSessionDo
                 if codesignResult == false {
                     let alert = NSAlert()
                     alert.messageText = "Codesigning error"
-                    alert.addButton(withTitle: "Yes")
-                    alert.addButton(withTitle: "No")
-                    alert.informativeText = "You appear to have a error with your codesigning certificate, do you want me to try and fix the problem?"
-                    let response = alert.runModal()
-                    if response == NSApplication.ModalResponse.alertFirstButtonReturn {
-                        iASShared.fixSigning(tempFolder)
-                        if self.testSigning(signingCertificate!, tempFolder: tempFolder) == false {
-                            let errorAlert = NSAlert()
-                            errorAlert.messageText = "Unable to Fix"
-                            errorAlert.addButton(withTitle: "OK")
-                            errorAlert.informativeText = "I was unable to automatically resolve your codesigning issue ☹\n\nIf you have previously trusted your certificate using Keychain, please set the Trust setting back to the system default."
-                            errorAlert.runModal()
-                            continueSigning = false
-                            return
-                        }
-                    } else {
-                        continueSigning = false
-                        return
-                    }
+                    alert.informativeText = "You appear to have an error with your codesigning certificate"
+                    alert.addButton(withTitle: "OK")
+                    alert.runModal()
+                    continueSigning = false
+                    return
                 }
             }
             continueSigning = true
