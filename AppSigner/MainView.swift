@@ -528,21 +528,21 @@ class MainView: NSView, URLSessionDataDelegate, URLSessionDelegate, URLSessionDo
         }
         return codesignTask
     }
-    func testSigning(_ certificate: String, tempFolder: String )->Bool? {
+    func testSigning(_ certificate: String, tempFolder: String ) -> (success: Bool, output: String)? {
         let codesignTempFile = tempFolder.stringByAppendingPathComponent("test-sign")
         
         // Copy our binary to the temp folder to use for testing.
         let path = ProcessInfo.processInfo.arguments[0]
         if (try? fileManager.copyItem(atPath: path, toPath: codesignTempFile)) != nil {
-            codeSign(codesignTempFile, certificate: certificate, entitlements: nil, before: nil, after: nil)
+            let task = codeSign(codesignTempFile, certificate: certificate, entitlements: nil, before: nil, after: nil)
             
             let verificationTask = Process().execute(codesignPath, workingDirectory: nil, arguments: ["-v",codesignTempFile])
             try? fileManager.removeItem(atPath: codesignTempFile)
             if verificationTask.status == 0 {
                 Log.write("Error testing codesign: \(verificationTask.output)")
-                return true
+                return (true, task.output)
             } else {
-                return false
+                return (false, task.output)
             }
         } else {
             setStatus("Error testing codesign")
@@ -624,10 +624,10 @@ class MainView: NSView, URLSessionDataDelegate, URLSessionDelegate, URLSessionDo
         
         DispatchQueue.main.async(execute: {
             if let codesignResult = self.testSigning(signingCertificate!, tempFolder: tempFolder) {
-                if codesignResult == false {
+                if codesignResult.success == false {
                     let alert = NSAlert()
                     alert.messageText = "Codesigning error"
-                    alert.informativeText = "You appear to have an error with your codesigning certificate"
+                    alert.informativeText = codesignResult.output
                     alert.addButton(withTitle: "OK")
                     alert.runModal()
                     continueSigning = false
